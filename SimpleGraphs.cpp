@@ -374,7 +374,6 @@ static PyMethodDef AdjacencyMatrix_methods[] = {
      {"delete_edge", (PyCFunction)delete_edge, METH_VARARGS, "Delete edge"},
      {"add_edge", (PyCFunction)add_edge, METH_VARARGS, "Add edge"},
      {"is_bipartite", (PyCFunction)is_bipartite, METH_NOARGS, "If is bipartite"},
-     //{"text", (PyCFunction)text, METH_VARARGS, ""},
      {NULL}
 };
 static PyTypeObject AdjacencyMatrixType = {
