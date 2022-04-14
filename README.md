@@ -12,7 +12,7 @@
 The purpose of the project was to implement in C++ Adjacency Matrix data structure representing small simple graphs and a set of operations performed on these graphs in such a way that it is visible in Python as a class inside the simple_graphs module.
 
 ## Technologies
-* Python
+* Python 3.9
 * C++
 * Windows OS
 
