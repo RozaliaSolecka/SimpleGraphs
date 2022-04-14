@@ -360,7 +360,6 @@ static PyObject* is_bipartite(AdjacencyMatrixObject* self)
     Py_RETURN_TRUE;
 }
 
-
 static PyMethodDef AdjacencyMatrix_methods[] = {
      {"number_of_vertices", (PyCFunction)number_of_vertices, METH_NOARGS, "Returns the number of vertices."},
      {"vertices", (PyCFunction)vertices, METH_NOARGS, "Returns the vertices."},
