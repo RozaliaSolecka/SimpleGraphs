@@ -1,15 +1,12 @@
 ﻿#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include "structmember.h"
-
-
 using namespace std;
+
 typedef struct {
     PyObject_HEAD
     unsigned short matrix[16];
     unsigned short vertices;
-
-
 } AdjacencyMatrixObject;
 
 static void
@@ -25,6 +22,7 @@ AdjacencyMatrix_new(PyTypeObject* type, PyObject* args, PyObject* kwds)
     self = (AdjacencyMatrixObject*)type->tp_alloc(type, 0);
     return (PyObject*)self;
 }
+
 static int
 AdjacencyMatrix_init(AdjacencyMatrixObject* self, PyObject* args, PyObject* kwds)
 {
@@ -96,9 +94,9 @@ static PyObject* vertices(AdjacencyMatrixObject* self)
         }
         number = number >> 1;
     }
-
     return set;
 }
+
 static PyObject* number_of_edges(AdjacencyMatrixObject* self)
 {
     int counter = 0;
@@ -117,6 +115,7 @@ static PyObject* number_of_edges(AdjacencyMatrixObject* self)
 
     return Py_BuildValue("i", counter);
 }
+
 static PyObject* edges(AdjacencyMatrixObject* self)
 {
     PyObject* set = PySet_New(NULL);
@@ -132,17 +131,16 @@ static PyObject* edges(AdjacencyMatrixObject* self)
                     PySet_Add(set, python_int);
                     Py_DECREF(python_int);
                 }
-                
             }
             number = number >> 1;
         }
     }
     return set;
 }
+
 static PyObject* is_edge(AdjacencyMatrixObject* self, PyObject* vertices)
 {
     int u, v;
-    // PyObject* result = Py_False;
     if (!PyArg_ParseTuple(vertices, "ii", &u, &v))
         return NULL;
 
@@ -163,6 +161,7 @@ static PyObject* is_edge(AdjacencyMatrixObject* self, PyObject* vertices)
     }
     Py_RETURN_FALSE;
 }
+
 static PyObject* vertex_degree(AdjacencyMatrixObject* self, PyObject* vertex)
 {
     int v;
@@ -189,6 +188,7 @@ static PyObject* vertex_degree(AdjacencyMatrixObject* self, PyObject* vertex)
     }
     return Py_BuildValue("i", counter);
 }
+
 static PyObject* vertex_neighbors(AdjacencyMatrixObject* self, PyObject* vertex)
 {
     int v;
@@ -217,12 +217,11 @@ static PyObject* vertex_neighbors(AdjacencyMatrixObject* self, PyObject* vertex)
             Py_DECREF(python_int);
         }
     }
-
     return set;
 }
+
 static PyObject* delete_vertex(AdjacencyMatrixObject* self, PyObject* vertex)
 {
-    //PyObject* result = NULL;
     int v;
 
     if (!PyArg_ParseTuple(vertex, "i", &v))
@@ -240,9 +239,9 @@ static PyObject* delete_vertex(AdjacencyMatrixObject* self, PyObject* vertex)
     }
     Py_RETURN_NONE;
 }
+
 static PyObject* add_vertex(AdjacencyMatrixObject* self, PyObject* vertex)
 {
-    //PyObject* result = NULL;
     int v;
 
     if (!PyArg_ParseTuple(vertex, "i", &v))
@@ -257,7 +256,6 @@ static PyObject* add_vertex(AdjacencyMatrixObject* self, PyObject* vertex)
 
 static PyObject* delete_edge(AdjacencyMatrixObject* self, PyObject* vertices)
 {
-    //PyObject* result = NULL;
     int u, v;
 
     if (!PyArg_ParseTuple(vertices, "ii", &u, &v))
@@ -278,7 +276,6 @@ static PyObject* delete_edge(AdjacencyMatrixObject* self, PyObject* vertices)
 
 static PyObject* add_edge(AdjacencyMatrixObject* self, PyObject* vertices)
 {
-    //PyObject* result = NULL;
     int u, v;
     unsigned short number = 0b1000000000000000;
 
@@ -291,16 +288,15 @@ static PyObject* add_edge(AdjacencyMatrixObject* self, PyObject* vertices)
     row = (row | number);
     self->matrix[u] = row;
 
-   
     number = 0b1000000000000000;
     number = (number >> u);
     row = self->matrix[v];
     row = row | number;
     self->matrix[v] = row;
-    
 
     Py_RETURN_NONE;
 }
+
 static bool color_component(AdjacencyMatrixObject* self, int* cs, int vertex, int color)
 {
     cs[vertex] = color;
@@ -324,7 +320,6 @@ static bool color_component(AdjacencyMatrixObject* self, int* cs, int vertex, in
             else {
                 Py_DECREF(edge);
             }
-            
         }
         number = number >> 1;
     }
@@ -333,7 +328,6 @@ static bool color_component(AdjacencyMatrixObject* self, int* cs, int vertex, in
 
 static PyObject* is_bipartite(AdjacencyMatrixObject* self)
 {
-
     int cs[16];
 
     for (int i = 0; i < 16; i++)
@@ -356,10 +350,8 @@ static PyObject* is_bipartite(AdjacencyMatrixObject* self)
             }
         }
     }
-
     Py_RETURN_TRUE;
 }
-
 
 static PyMethodDef AdjacencyMatrix_methods[] = {
      {"number_of_vertices", (PyCFunction)number_of_vertices, METH_NOARGS, "Returns the number of vertices."},
@@ -377,6 +369,7 @@ static PyMethodDef AdjacencyMatrix_methods[] = {
      //{"text", (PyCFunction)text, METH_VARARGS, ""},
      {NULL}
 };
+
 static PyTypeObject AdjacencyMatrixType = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "adjacencymatrix.AdjacencyMatrix",                          /*tp_name*/
